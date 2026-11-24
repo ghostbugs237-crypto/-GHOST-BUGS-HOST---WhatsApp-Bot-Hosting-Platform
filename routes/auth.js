@@ -1,3 +1,4 @@
+
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -5,21 +6,8 @@ import { database } from "../config/database.js";
 
 const router = express.Router();
 
-const createUsersTable = database.query(`
-  CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    role VARCHAR(20) DEFAULT 'user',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  )
-`);
-
 router.post("/register", async (req, res) => {
   try {
-    await createUsersTable;
-
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -32,7 +20,7 @@ router.post("/register", async (req, res) => {
     if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: "Password must be at least 8 characters"
+        message: "Password must contain at least 8 characters"
       });
     }
 
@@ -61,7 +49,6 @@ router.post("/register", async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Account created successfully",
       user: result.rows[0]
     });
 
@@ -76,8 +63,6 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    await createUsersTable;
-
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -100,7 +85,6 @@ router.post("/login", async (req, res) => {
     }
 
     const user = result.rows[0];
-
     const validPassword = await bcrypt.compare(
       password,
       user.password_hash
@@ -125,7 +109,6 @@ router.post("/login", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Login successful",
       token,
       user: {
         id: user.id,
