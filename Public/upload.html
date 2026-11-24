@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090f">
     <title>Upload Bot | GHOST BUGS HOST</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,11 +17,14 @@
         <p>Upload your bot ZIP package.</p>
 
         <form id="uploadForm">
+
             <label for="botName">Bot Name</label>
             <input
                 type="text"
                 id="botName"
+                name="botName"
                 placeholder="Enter bot name"
+                maxlength="60"
                 required
             >
 
@@ -28,17 +32,23 @@
             <input
                 type="file"
                 id="botFile"
-                accept=".zip"
+                name="botFile"
+                accept=".zip,application/zip"
                 required
             >
 
-            <button type="submit">Upload Bot</button>
+            <button type="submit" id="uploadButton">
+                Upload Bot
+            </button>
+
         </form>
 
-        <p id="message"></p>
+        <p id="message" role="status" aria-live="polite"></p>
 
         <a href="dashboard.html">Back to Dashboard</a>
     </main>
+
+    <script src="upload.js" defer></script>
 
 </body>
 </html>
