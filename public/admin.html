@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | GHOST BUGS HOST</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">GHOST BUGS <span>ADMIN</span></div>
+  <a href="dashboard.html">Dashboard</a>
+</header>
+
+<main class="dashboard">
+  <section class="welcome">
+    <p>ADMINISTRATION</p>
+    <h1>Admin Control Panel</h1>
+    <p>Monitor users and WhatsApp bot statistics.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat-card">
+      <h3>Total Users</h3>
+      <strong id="totalUsers">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <h3>Total Bots</h3>
+      <strong id="totalBots">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <h3>Running Bots</h3>
+      <strong id="runningBots">0</strong>
+    </div>
+  </section>
+
+  <section class="bot-section">
+    <h2>Registered Users</h2>
+    <div id="userList">Loading users...</div>
+    <p id="adminMessage"></p>
+  </section>
+</main>
+
+<script src="admin.js" defer></script>
+</body>
+</html>
