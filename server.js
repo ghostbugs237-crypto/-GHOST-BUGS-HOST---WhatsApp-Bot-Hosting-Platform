@@ -1,5 +1,4 @@
 
-
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -18,13 +17,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
 
-app.get("/", (req, res) => {
-  res.json({
-    name: "GHOST BUGS HOST",
-    status: "online",
-    message: "WhatsApp Bot Hosting Platform"
-  });
-});
+// Serve website frontend
+app.use(express.static("public"));
 
 app.get("/api/status", (req, res) => {
   res.json({
