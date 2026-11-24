@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | GHOST BUGS HOST</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">GHOST BUGS <span>HOST</span></div>
+  <button id="logoutButton">LOGOUT</button>
+</header>
+
+<main class="dashboard">
+
+  <section class="welcome">
+    <p>CONTROL PANEL</p>
+    <h1>Welcome, <span id="userName">User</span></h1>
+    <p>Manage your WhatsApp bots from one place.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat-card">
+      <h3>Total Bots</h3>
+      <strong id="totalBots">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <h3>Running Bots</h3>
+      <strong id="runningBots">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <h3>Stopped Bots</h3>
+      <strong id="stoppedBots">0</strong>
+    </div>
+  </section>
+
+  <section class="bot-section">
+    <div class="section-heading">
+      <h2>My WhatsApp Bots</h2>
+      <button id="addBotButton">+ ADD NEW BOT</button>
+    </div>
+
+    <div id="botList" class="bot-list">
+      <p>Loading your bots...</p>
+    </div>
+  </section>
+
+  <section id="createBotPanel" class="auth-card hidden">
+    <h2>Create New Bot</h2>
+
+    <form id="createBotForm">
+      <label>Bot Name</label>
+      <input id="botName" type="text"
+        placeholder="Enter bot name" required>
+
+      <button type="submit" id="createBotSubmit">
+        CREATE BOT
+      </button>
+    </form>
+
+    <p id="botMessage"></p>
+  </section>
+
+</main>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
