@@ -6,7 +6,9 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.js";
 import botRoutes from "./routes/bots.js";
+import uploadRoutes from "./routes/upload.js";
 import adminRoutes from "./routes/admin.js";
+
 import { initializeDatabase } from "./config/database.js";
 
 dotenv.config();
@@ -20,6 +22,7 @@ app.use(express.json({ limit: "2mb" }));
 // Serve website frontend
 app.use(express.static("public"));
 
+// Server status
 app.get("/api/status", (req, res) => {
   res.json({
     success: true,
@@ -28,10 +31,13 @@ app.get("/api/status", (req, res) => {
   });
 });
 
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/bots", botRoutes);
+app.use("/api/upload", uploadRoutes);
 app.use("/api/admin", adminRoutes);
 
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
