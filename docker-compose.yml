@@ -1,0 +1,13 @@
+services:
+  ghost-bugs-host:
+    build: .
+    container_name: ghost-bugs-host
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+    volumes:
+      - ./uploads:/app/uploads
