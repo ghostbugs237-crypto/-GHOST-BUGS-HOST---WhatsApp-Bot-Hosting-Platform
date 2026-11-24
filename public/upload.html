@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Bot | GHOST BUGS HOST</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">GHOST BUGS <span>HOST</span></div>
+  <a href="dashboard.html">Dashboard</a>
+</header>
+
+<main class="dashboard">
+  <section class="auth-card">
+    <h2>Upload WhatsApp Bot</h2>
+    <p>Select your bot ZIP file to prepare it for deployment.</p>
+
+    <form id="uploadForm">
+      <label>Bot ZIP File</label>
+      <input
+        type="file"
+        id="botFile"
+        accept=".zip"
+        required
+      >
+
+      <button type="submit" id="uploadButton">
+        UPLOAD BOT
+      </button>
+    </form>
+
+    <p id="uploadMessage"></p>
+  </section>
+</main>
+
+</body>
+</html>
