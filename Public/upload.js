@@ -19,29 +19,42 @@ uploadForm.addEventListener("submit", async (event) => {
     }
 
     if (botFile.size > 50 * 1024 * 1024) {
-        message.textContent = "File must not exceed 50 MB.";
+        message.textContent = "Maximum file size is 50 MB.";
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        message.textContent = "Please login first.";
         return;
     }
 
     const formData = new FormData();
-    formData.append("botName", botName);
     formData.append("botFile", botFile);
 
-    message.textContent = "Preparing upload...";
+    message.textContent = "Uploading...";
 
     try {
-        const response = await fetch("/api/bots/upload", {
+        const response = await fetch("/api/upload", {
             method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
             body: formData
         });
 
         const result = await response.json();
 
-        message.textContent = result.message ||
-            (response.ok ? "Upload successful!" : "Upload failed.");
+        if (!response.ok) {
+            throw new Error(result.message || "Upload failed.");
+        }
+
+        message.textContent = result.message;
+
+        uploadForm.reset();
 
     } catch (error) {
-        message.textContent = "Server connection failed.";
+        message.textContent = error.message;
     }
 });
-  
