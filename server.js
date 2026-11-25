@@ -15,6 +15,7 @@ dotenv.config();
 
 const app = express();
 
+// Security and middleware
 app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
@@ -45,8 +46,10 @@ app.use((req, res) => {
   });
 });
 
+// Server port
 const PORT = process.env.PORT || 3000;
 
+// Start server
 async function startServer() {
   try {
     await initializeDatabase();
@@ -54,6 +57,7 @@ async function startServer() {
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`GHOST BUGS HOST running on port ${PORT}`);
     });
+
   } catch (error) {
     console.error("Server startup failed:", error.message);
     process.exit(1);
