@@ -1,60 +1,98 @@
 
-const uploadForm = document.getElementById("uploadForm");
-const message = document.getElementById("message");
+document.addEventListener("DOMContentLoaded", () => {
+  const app = document.getElementById("upload-app") || document.body;
 
-uploadForm.addEventListener("submit", async (event) => {
+  app.innerHTML = `
+    <div class="upload-container">
+      <h2>GHOST BUGS HOST</h2>
+      <h3>Upload Your Bot</h3>
+
+      <p>Select your bot ZIP file to upload.</p>
+
+      <form id="uploadForm">
+        <input
+          type="file"
+          id="botFile"
+          accept=".zip,application/zip"
+          required
+        />
+
+        <button type="submit" id="uploadButton">
+          Upload Bot
+        </button>
+      </form>
+
+      <p id="uploadStatus"></p>
+    </div>
+  `;
+
+  const form = document.getElementById("uploadForm");
+  const fileInput = document.getElementById("botFile");
+  const button = document.getElementById("uploadButton");
+  const status = document.getElementById("uploadStatus");
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const botName = document.getElementById("botName").value.trim();
-    const botFile = document.getElementById("botFile").files[0];
+    const file = fileInput.files[0];
 
-    if (!botName || !botFile) {
-        message.textContent = "Please fill in all fields.";
-        return;
+    if (!file) {
+      status.textContent = "Please select a ZIP file.";
+      return;
     }
 
-    if (!botFile.name.toLowerCase().endsWith(".zip")) {
-        message.textContent = "Only ZIP files are allowed.";
-        return;
+    if (!file.name.toLowerCase().endsWith(".zip")) {
+      status.textContent = "Only ZIP files are allowed.";
+      return;
     }
 
-    if (botFile.size > 50 * 1024 * 1024) {
-        message.textContent = "Maximum file size is 50 MB.";
-        return;
+    // Backend upload limit: 100 MB
+    if (file.size > 100 * 1024 * 1024) {
+      status.textContent = "File must not exceed 100 MB.";
+      return;
     }
 
-    const token = localStorage.getItem("token");
+    const token =
+      localStorage.getItem("token") ||
+      localStorage.getItem("authToken");
 
     if (!token) {
-        message.textContent = "Please login first.";
-        return;
+      status.textContent = "Please login before uploading.";
+      return;
     }
 
     const formData = new FormData();
-    formData.append("botFile", botFile);
+    formData.append("botFile", file);
 
-    message.textContent = "Uploading...";
+    button.disabled = true;
+    button.textContent = "Uploading...";
+    status.textContent = "Please wait while your bot uploads.";
 
     try {
-        const response = await fetch("/api/upload", {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            body: formData
-        });
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
+      });
 
-        const result = await response.json();
+      const result = await response.json();
 
-        if (!response.ok) {
-            throw new Error(result.message || "Upload failed.");
-        }
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Upload failed.");
+      }
 
-        message.textContent = result.message;
+      status.textContent =
+        "Upload successful! File: " + result.file.name;
 
-        uploadForm.reset();
+      fileInput.value = "";
 
     } catch (error) {
-        message.textContent = error.message;
+      status.textContent = error.message;
+    } finally {
+      button.disabled = false;
+      button.textContent = "Upload Bot";
     }
+  });
 });
