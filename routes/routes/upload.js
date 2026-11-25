@@ -3,11 +3,15 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import { authenticateUser } from "../middleware/auth.js";
+import { fileURLToPath } from "url";
+import { authenticateUser } from "../backend/middleware/auth.js";
 
 const router = express.Router();
 
-const uploadDirectory = path.resolve("uploads");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const uploadDirectory = path.resolve(__dirname, "../uploads");
 
 fs.mkdirSync(uploadDirectory, { recursive: true });
 
@@ -59,5 +63,26 @@ router.post(
     });
   }
 );
+
+// Upload error handler
+router.use((error, req, res, next) => {
+  if (error instanceof multer.MulterError) {
+    return res.status(400).json({
+      success: false,
+      message: error.code === "LIMIT_FILE_SIZE"
+        ? "File must not exceed 100 MB"
+        : "Upload failed: " + error.message
+    });
+  }
+
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+
+  next();
+});
 
 export default router;
